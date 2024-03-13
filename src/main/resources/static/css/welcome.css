@@ -1,0 +1,101 @@
+/* Importer skrifttype */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap');
+
+/* Grundlæggende sideopsætning */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #b79b9b;
+}
+
+/* Styling for hero image */
+.hero {
+    background: url('../img/frontpage.jpg') no-repeat center center;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #fff;
+}
+
+/* Overlay for at gøre teksten mere læsbar over billedet */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Overskrifter og tekst */
+.hero h1 {
+    font-size: 3rem;
+    color: #ee9c9c;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    max-width: 600px;
+    margin: auto;
+    color: #c2bcbc;
+}
+
+/* Knapper */
+.button {
+    padding: 12px 30px;
+    background-color: #a13941; /* Button color from your previous style */
+    color: #fff;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.hero-content ul li {
+    margin-bottom: 10px; /* Adds space below each list item */
+}
+
+.button:hover {
+    background-color: #8b2e35;
+}
+
+.featured-attractions {
+    text-align: center;
+    padding: 2rem;
+}
+
+.featured-attractions h2 {
+    color: #a13941; /* Harmonizing with the button color */
+}
+
+.featured-attractions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.featured-attractions li a {
+    color: #a13941; /* Same as button for consistency */
+    text-decoration: none;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+

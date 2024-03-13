@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Turistattraktioner</title>
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon-16x16.png}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: site-header}"></div>
+<h1>Turistattraktioner:</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Navn</th>
+        <th>Beskrivelse</th>
+        <th>Område</th>
+        <th>Handlinger</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="attraction : ${attractions}">
+        <td><a th:href="@{'/attractions/' + ${attraction.name}}" class="attraction-link" th:text="${attraction.name}">Navn</a></td>
+        <td th:text="${attraction.description}">Beskrivelse</td>
+        <td th:text="${attraction.location}">By</td>
+        <td>
+            <a th:href="@{'/attractions/' + ${attraction.name} + '/edit'}">Opdater</a> |
+            <a th:href="@{'/attractions/' + ${attraction.name} + '/delete'}">Slet</a> |
+            <a th:href="@{'/attractions/' + ${attraction.name} + '/tags'}">Tags</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/attractions/add}" class="add-attraction-btn">Tilføj ny attraktion</a>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Attraktion Detaljer</title>
+  <link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon-16x16.png}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: site-header}"></div>
+<div class="container">
+  <h1 th:text="${attraction.name}">Attraktionsnavn</h1>
+  <p th:text="${attraction.description}">Beskrivelse</p>
+  <p><strong>Område:</strong> <span th:text="${attraction.location}">Område</span></p>
+  <div>
+    <h2>Tags</h2>
+    <ul>
+      <li th:each="tag : ${attraction.tags}" th:text="${tag.displayValue}">Tag</li>
+    </ul>
+  </div>
+  <a th:href="@{/attractions}" class="btn-back">Tilbage til liste</a>
+</div>
+</body>
+</html>

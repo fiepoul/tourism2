@@ -1,0 +1,36 @@
+### Get all attractions
+GET http://localhost:8080/attractions
+
+###
+
+### Get attraction by name
+GET http://localhost:8080/attractions/Flyvergrillen
+
+###
+
+### Add new attraction
+POST http://localhost:8080/attractions
+Content-Type: application/json
+
+{
+  "name": "Flyvergrillen",
+  "description": "Populært spisested for flyentusiaster på Amager."
+}
+
+###
+
+### Update an attraction
+PUT http://localhost:8080/attractions/update/Flyvergrillen
+Content-Type: application/json
+
+{
+  "name": "Flyvergrillen",
+  "description": "Opdateret beskrivelse"
+}
+
+###
+
+### Delete an attraction
+DELETE http://localhost:8080/attractions/delete/Flyvergrillen
+
+###

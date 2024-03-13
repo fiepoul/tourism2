@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Header Fragment</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<header th:fragment="site-header" class="site-header">
+  <div class="header-content">
+    <h1 class="site-title">
+      <a th:href="@{/index.html}" href="/" class="header-logo-link">
+      <img src="/img/logo.webp" class="logo-image" alt="Site Logo">
+      HIMMELHAV GUIDE
+      </a>
+    </h1>
+    <nav class="navigation-menu">
+      <ul>
+        <li><a th:href="@{/attractions}" href="/attractions">Se Attraktioner</a></li>
+        <!-- Flere menu-elementer kan tilføjes her -->
+      </ul>
+    </nav>
+  </div>
+</header>
+</body>
+</html>

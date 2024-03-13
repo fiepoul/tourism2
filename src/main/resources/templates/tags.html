@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon-16x16.png}">
+    <title th:text="${attractionName} + ' tags'">Attraktion Tags</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: site-header}"></div>
+<div class="container">
+    <h2 th:text="${attractionName} + ' tags'">Attraktion Tags</h2>
+    <div class="tags-list">
+        <ul>
+            <li th:each="tag : ${tags}" th:text="${tag}">Tag</li>
+        </ul>
+    </div>
+    <a href="/attractions" class="btn btn-back">Tilbage</a>
+</div>
+</body>
+</html>

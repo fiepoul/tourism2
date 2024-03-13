@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Ændring af turistattraktion</title>
+  <link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon-16x16.png}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link rel="stylesheet" th:href="@{/css/update.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: site-header}"></div>
+<div class="form-container">
+  <form th:action="@{/attractions/update/{name}(name=${attraction.name})}" th:object="${attraction}" method="post">
+    <div class="form-group">
+      <label for="name">Navn:</label>
+      <input type="text" id="name" th:value="${attraction.name}" disabled />
+    </div>
+    <div class="form-group">
+      <label for="description">Beskrivelse:</label>
+      <input type="text" id="description" th:field="*{description}" required />
+    </div>
+    <div class="form-group">
+      <label for="location">Område:</label>
+      <select id="location" th:field="*{location}" required>
+        <option th:each="loc : ${allLocations}" th:value="${loc}" th:text="${loc}"
+                th:selected="${loc == attraction.location}"></option>
+      </select>
+    </div>
+    <div class="tags-container">
+      <div th:each="tag : ${allTags}">
+        <input type="checkbox" th:id="${'tag' + tag.ordinal()}" th:name="tags"
+               th:value="${tag.name()}" th:checked="${attraction.tags.contains(tag)}" />
+        <label th:for="${'tag' + tag.ordinal()}" th:text="${tag.getDisplayValue()}">Tag</label>
+      </div>
+    </div>
+    <div class="form-buttons">
+      <button type="submit" class="btn-primary">Ok</button>
+      <button type="reset" class="btn-secondary">Fortryd</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

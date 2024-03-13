@@ -1,0 +1,77 @@
+.form-container {
+    max-width: 600px; /* Eller hvilken bredde du foretrækker */
+    margin: 0 auto; /* Centrerer containeren på siden */
+    padding: 20px; /* Tilføjer lidt polstring indeni containeren */
+    background: #ffffff; /* Vælger en baggrundsfarve */
+    border-radius: 8px; /* Giver containeren bløde hjørner */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* En let skygge for at løfte containeren fra baggrunden */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Tilføjer afstand mellem formulargrupperne */
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between; /* Fordeler knapperne i hver sin ende af containeren */
+    margin-top: 20px; /* Tilføjer afstand ovenover knapperne */
+}
+
+.btn-primary {
+    background: #a19c39; /* En primær knapfarve */
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: #6c757d; /* En sekundær knapfarve */
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input, select, textarea {
+    width: 100%; /* Sørger for at felterne fylder containeren */
+    padding: 8px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Sikrer at padding ikke tilføjer til feltets totale bredde */
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #a19c39;
+    outline: none; /* Fjerner standard outline og bruger en brugerdefineret border-color */
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background: #a19c39; /* Mørkere skygge af primær farve for hover/focus */
+    color: #ffffff;
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background: #545b62; /* Mørkere skygge af sekundær farve for hover/focus */
+    color: #ffffff;
+}
+
+@media (max-width: 576px) {
+    .form-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-buttons button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%; /* Får knapperne til at fylde containeren på små skærme */
+    }
+}

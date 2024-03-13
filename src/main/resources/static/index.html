@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+    <title>Himmelhav: Din Passage til Paradis</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/welcome.css">
+</head>
+<header class="site-header">
+    <div class="header-content">
+        <h1 class="header-logo-link">
+            <img src="/img/logo.webp" class="logo-image" alt="Site Logo">
+            HIMMELHAV GUIDE
+        </h1>
+        <nav class="navigation-menu">
+            <ul>
+                <li><a href="/attractions" th:href="@{/attractions}">Se Attraktioner</a></li>
+                <!-- Flere menu-elementer kan tilføjes her -->
+            </ul>
+        </nav>
+    </div>
+</header>
+<body>
+<div class="hero">
+    <div class="hero-content">
+        <p>Opdag Danmarks skjulte perler og bliv inspireret til dit næste eventyr.</p>
+        <h2>Udvalgte Attraktioner</h2>
+        <ul>
+            <li><a href="/attractions/flyvergrillen">Flyvergrillen</a></li>
+            <li><a href="/attractions/cisternerne">Cisternerne</a></li>
+            <li><a href="/attractions/raabjerg_mile">Råbjerg Mile</a></li>
+            <li><a href="/attractions/mols_bjerge">Mols Bjerge</a></li>
+        </ul>
+    </div>
+</div>
+
+<section class="featured-attractions">
+    <a href="/attractions" class="button">Udforsk nu</a>
+</section>
+
+<footer>
+    <p>Kontakt os på: <a href="mailto:info@himmelhav.dk">info@himmelhav.dk</a></p>
+</footer>
+</body>
+</html>
