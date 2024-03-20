@@ -1,1 +1,1 @@
-simple test of pull workflow
+simple new test of pull workflow
