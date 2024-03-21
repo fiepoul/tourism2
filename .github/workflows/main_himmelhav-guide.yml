@@ -27,6 +27,17 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
+      - name: Run Tests and Publish Report
+        run: mvn test --batch-mode --fail-at-end
+        continue-on-error: true # Dette sikrer, at efterfølgende steps kører selv hvis dette fejler
+
+      - name: Publish Test Report
+        if: always() # Kører altid uanset resultatet af de tidligere steps
+        uses: scacap/action-surefire-report@v1
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           report_paths: '**/target/surefire-reports/*.xml'
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
