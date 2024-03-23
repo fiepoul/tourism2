@@ -2,7 +2,6 @@ package tourism.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tourism.model.AttractionTag;
 import tourism.model.TouristAttraction;
 import tourism.repository.TouristRepository;
 
@@ -42,15 +41,15 @@ public class TouristService {
     }
 
     public List<String> getTagsForAttraction(String name) {
-        Optional<TouristAttraction> attraction = repository.findByName(name);
-        return attraction.map(a -> a.getTags().stream()
-                        .map(AttractionTag::getDisplayValue)
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+        return repository.findTagsForAttraction(name);
     }
 
     public List<String> getLocations() {
         return repository.getLocations();
+    }
+
+    public List<String> getAllTags() {
+        return repository.getAllTags();
     }
 
 

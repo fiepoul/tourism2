@@ -1,69 +1,141 @@
 package tourism.repository;
 
-import jdk.jfr.Registered;
 import org.springframework.stereotype.Repository;
-import tourism.model.AttractionTag;
 import tourism.model.TouristAttraction;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class TouristRepository {
-    private List<TouristAttraction> attractions = new ArrayList<>();
+    private String jdbcURL = "jdbc:mysql://localhost:3306/himmelhavguide_db";
+    private String jdbcUsername = "fipo0001@stud.kea.dk";
+    private String jdbcPassword = ".KasperNikolaj4576";
 
-    public TouristRepository() {
-        attractions.add(new TouristAttraction("flyvergrillen", "et spisested og udsigtspunkt over flyvebanen i Kastrup", "København", List.of(AttractionTag.MAD_DRIKKE, AttractionTag.HISTORISK, AttractionTag.UDSIGT)));
-        attractions.add(new TouristAttraction("Cisternerne", "En tidligere vandreservoir under Frederiksberg høj som nu er en kunst udstillingsplads.", "København", List.of(AttractionTag.EVENTYRLIG, AttractionTag.KUNST, AttractionTag.KULTUR)));
-        attractions.add(new TouristAttraction("Baby Zoo på Gavnoe Slot", "En lille zoologisk have, der fokuserer på babydyr.", "Sydsjælland", List.of(AttractionTag.FAMILIEVENLIG, AttractionTag.EVENTYRLIG)));
-        attractions.add(new TouristAttraction("Raabjerg_Mile", "En vandrende sandklit nær Skagen.", "Nordjylland", List.of(AttractionTag.NATUR, AttractionTag.UDSIGT)));
-        attractions.add(new TouristAttraction("Verdenskortet ved Klejtrup Soe", "En stor park med et stort kort over verden i skala 1:100.000.", "Midtjylland", List.of(AttractionTag.NATUR, AttractionTag.EVENTYRLIG)));
-        attractions.add(new TouristAttraction("Mols_Bjerge", "Præhistoriske gravhøje med fantastisk udsigt.", "Midtjylland", List.of(AttractionTag.HISTORISK, AttractionTag.UDSIGT, AttractionTag.NATUR)));
+    private static final String INSERT_ATTRACTION = "INSERT INTO attractions (name, description) VALUES (?, ?);";
+    private static final String SELECT_ALL_ATTRACTIONS = "SELECT * FROM attractions;";
+    private static final String SELECT_ATTRACTION_BY_NAME = "SELECT * FROM attractions WHERE name = ?;";
+    private static final String UPDATE_ATTRACTION = "UPDATE attractions SET name = ?, description = ? WHERE name = ?;";
+    private static final String DELETE_ATTRACTION = "DELETE FROM attractions WHERE name = ?;";
+
+    private static final String SELECT_TAGS_FOR_ATTRACTION =
+            "SELECT t.name FROM tags t " +
+                    "INNER JOIN attraction_tags at ON t.id = at.tag_id " +
+                    "INNER JOIN attractions a ON at.attraction_id = a.id " +
+                    "WHERE a.name = ?;";
+
+    protected Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
     }
 
-    public List<String> getLocations() {
-        return List.of(
-                "Nordsjælland",
-                "Sydsjælland",
-                "København",
-                "Midtjylland",
-                "Sønderjylland",
-                "Fyn",
-                "Bornholm",
-                "Vestjylland",
-                "Østjylland"
-        );
-    }
-
-    //CRUD metoder
-    public Optional<TouristAttraction> findByName(String name) {
-        return attractions.stream().filter(attraction -> attraction.getName().equalsIgnoreCase(name)).findFirst();
-    }
-
-    public List<TouristAttraction> findAll() {
-        return attractions;
+    public List<String> findTagsForAttraction(String attractionName) {
+        List<String> tags = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_TAGS_FOR_ATTRACTION)) {
+            preparedStatement.setString(1, attractionName);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                tags.add(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tags;
     }
 
     public void add(TouristAttraction attraction) {
-        attractions.add(attraction);
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ATTRACTION)) {
+            preparedStatement.setString(1, attraction.getName());
+            preparedStatement.setString(2, attraction.getDescription());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<TouristAttraction> findAll() {
+        List<TouristAttraction> attractions = new ArrayList<>();
+        String query = "SELECT a.name, a.description, l.name AS locationName FROM attractions a JOIN locations l ON a.location_id = l.id;";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                String locationName = rs.getString("locationName");
+                List<String> tags = findTagsForAttraction(name);
+                attractions.add(new TouristAttraction(name, description, locationName, tags)); // Antag at TouristAttraction konstruktøren er opdateret til at håndtere locationName og en liste af tags
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return attractions;
+    }
+
+    public Optional<TouristAttraction> findByName(String name) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ATTRACTION_BY_NAME)) {
+            preparedStatement.setString(1, name);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                String attractionName = rs.getString("name");
+                String description = rs.getString("description");
+                // Bemærk: Eksemplet henter ikke location_id eller tags
+                return Optional.of(new TouristAttraction(attractionName, description, null, null));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public List<String> getAllTags() {
+        List<String> tags = new ArrayList<>();
+        String sql = "SELECT name FROM tags;";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                tags.add(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tags;
+    }
+
+    public List<String> getLocations() {
+        List<String> locations = new ArrayList<>();
+        String query = "SELECT name FROM locations;";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                locations.add(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return locations;
     }
 
     public void update(String name, TouristAttraction updatedAttraction) {
-        for (TouristAttraction attraction: attractions) {
-            if (attraction.getName().equalsIgnoreCase(name)) {
-                attraction.setName(updatedAttraction.getName());
-                attraction.setDescription(updatedAttraction.getDescription());
-                attraction.setLocation(updatedAttraction.getLocation());
-                attraction.setTags(updatedAttraction.getTags());
-            }
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ATTRACTION)) {
+            preparedStatement.setString(1, updatedAttraction.getName());
+            preparedStatement.setString(2, updatedAttraction.getDescription());
+            preparedStatement.setString(3, name);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public void delete(String name) {
-        findByName(name).ifPresent(attractions::remove);
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ATTRACTION)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-
-
 }

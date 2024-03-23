@@ -8,9 +8,9 @@ public class TouristAttraction {
     private String name;
     private String description;
     private String location;
-    private List<AttractionTag> tags;
+    private List<String> tags;
 
-    public TouristAttraction(String name, String description, String location, List<AttractionTag> tags) {
+    public TouristAttraction(String name, String description, String location, List<String> tags) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -32,7 +32,7 @@ public class TouristAttraction {
         return description;
     }
 
-    public List<AttractionTag> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
@@ -48,7 +48,7 @@ public class TouristAttraction {
         return location;
     }
 
-    public void setTags(List<AttractionTag> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 

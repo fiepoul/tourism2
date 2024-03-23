@@ -5,13 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import tourism.model.AttractionTag;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/attractions")
@@ -52,7 +50,7 @@ public class TouristController {
         TouristAttraction attraction = service.getAttractionByName(name);
         if (attraction != null) {
             model.addAttribute("attraction", attraction);
-            model.addAttribute("allTags", AttractionTag.values());
+            model.addAttribute("allTags", service.getAllTags());
             model.addAttribute("allLocations", service.getLocations());
             return "updateAttraction";
         } else {
@@ -62,18 +60,13 @@ public class TouristController {
 
     @PostMapping("/{name}/update")
     public String updateAttraction(@PathVariable String name, @ModelAttribute TouristAttraction attraction, @RequestParam List<String> tags) {
-        List<AttractionTag> enumTags = tags.stream()
-                .map(AttractionTag::valueOf)
-                .collect(Collectors.toList());
-        attraction.setTags(enumTags);
+        attraction.setTags(tags);
         service.updateAttraction(name, attraction);
         return "redirect:/attractions";
     }
 
     @PostMapping("/save")
-    public String saveAttraction(@ModelAttribute TouristAttraction attraction,
-                                 @RequestParam(required = false) List<AttractionTag> tags) {
-
+    public String saveAttraction(@ModelAttribute TouristAttraction attraction, @RequestParam(required = false) List<String> tags) {
         if (tags == null) {
             tags = new ArrayList<>();
         }
@@ -86,7 +79,8 @@ public class TouristController {
     public String showAddAttractionForm(Model model) {
         model.addAttribute("attraction", new TouristAttraction()); // tom instans for form
         model.addAttribute("allLocations", service.getLocations()); //todo: hvad går galt her? måske genstart
-        model.addAttribute("allTags", AttractionTag.values()); // Sender alle tags til modellen
+        List<String> allTags = service.getAllTags(); // Sender alle tags til modellen
+        model.addAttribute("allTags", allTags);
         return "add-attraction";
     }
 
