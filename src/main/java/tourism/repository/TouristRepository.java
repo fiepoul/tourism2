@@ -1,5 +1,6 @@
 package tourism.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import java.sql.*;
@@ -8,11 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TouristRepository {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/himmelhavguide_db";
-    private String jdbcUsername = "fipo0001@stud.kea.dk";
-    private String jdbcPassword = ".KasperNikolaj4576";
-
+public class TouristRepository implements ITouristRepository {
+    private final DBManager dbManager;
     private static final String INSERT_ATTRACTION = "INSERT INTO attractions (name, description) VALUES (?, ?);";
     private static final String SELECT_ALL_ATTRACTIONS = "SELECT * FROM attractions;";
     private static final String SELECT_ATTRACTION_BY_NAME = "SELECT * FROM attractions WHERE name = ?;";
@@ -25,8 +23,13 @@ public class TouristRepository {
                     "INNER JOIN attractions a ON at.attraction_id = a.id " +
                     "WHERE a.name = ?;";
 
+    @Autowired
+    public TouristRepository(DBManager dbManager) {
+        this.dbManager = dbManager;
+    }
+
     protected Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        return DBManager.getInstance().getConnection();
     }
 
     public List<String> findTagsForAttraction(String attractionName) {

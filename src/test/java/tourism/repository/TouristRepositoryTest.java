@@ -11,11 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TouristRepositoryTest {
     private TouristRepository repository;
 
-    @BeforeEach
-    void setUp() {
-        repository = new TouristRepository(); // Genopretter repository før hver test
-    }
-
     @Test
     void findByNameExistingAttraction() {
         String attractionName = "flyvergrillen";

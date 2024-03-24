@@ -3,19 +3,16 @@ package tourism.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tourism.model.TouristAttraction;
-import tourism.repository.TouristRepository;
+import tourism.repository.ITouristRepository;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TouristService {
-    private final TouristRepository repository;
+    private final ITouristRepository repository;
 
     @Autowired
-    public TouristService(TouristRepository repository) {
+    public TouristService(ITouristRepository repository) {
         this.repository = repository;
     }
 
