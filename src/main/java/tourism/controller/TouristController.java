@@ -78,7 +78,7 @@ public class TouristController {
     @GetMapping("/add")
     public String showAddAttractionForm(Model model) {
         model.addAttribute("attraction", new TouristAttraction()); // tom instans for form
-        model.addAttribute("allLocations", service.getLocations()); //todo: hvad går galt her? måske genstart
+        model.addAttribute("allLocations", service.getLocations());
         List<String> allTags = service.getAllTags(); // Sender alle tags til modellen
         model.addAttribute("allTags", allTags);
         return "add-attraction";

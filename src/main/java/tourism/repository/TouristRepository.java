@@ -10,7 +10,8 @@ import java.util.Optional;
 
 @Repository
 public class TouristRepository implements ITouristRepository {
-    private final DBManager dbManager;
+    @Autowired
+    private DBManager dbManager;
     private static final String INSERT_ATTRACTION = "INSERT INTO attractions (name, description) VALUES (?, ?);";
     private static final String SELECT_ALL_ATTRACTIONS = "SELECT * FROM attractions;";
     private static final String SELECT_ATTRACTION_BY_NAME = "SELECT * FROM attractions WHERE name = ?;";
@@ -29,7 +30,7 @@ public class TouristRepository implements ITouristRepository {
     }
 
     protected Connection getConnection() throws SQLException {
-        return DBManager.getInstance().getConnection();
+        return dbManager.getConnection();
     }
 
     public List<String> findTagsForAttraction(String attractionName) {
