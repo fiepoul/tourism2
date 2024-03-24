@@ -2,14 +2,21 @@ package tourism.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import tourism.model.TouristAttraction;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class TouristRepositoryTest {
-    private TouristRepository repository;
+    private final TouristRepository repository;
+
+    TouristRepositoryTest(TouristRepository repository) {
+        this.repository = repository;
+    }
 
     @Test
     void findByNameExistingAttraction() {
