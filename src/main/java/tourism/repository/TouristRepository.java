@@ -69,7 +69,7 @@ public class TouristRepository implements ITouristRepository {
                 String description = rs.getString("description");
                 String locationName = rs.getString("locationName");
                 List<String> tags = findTagsForAttraction(name);
-                attractions.add(new TouristAttraction(name, description, locationName, tags)); // Antag at TouristAttraction konstruktøren er opdateret til at håndtere locationName og en liste af tags
+                attractions.add(new TouristAttraction(name, description, locationName, tags)); 
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,8 +83,7 @@ public class TouristRepository implements ITouristRepository {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 String attractionName = rs.getString("name");
-                String description = rs.getString("description");
-                // Bemærk: Eksemplet henter ikke location_id eller tags
+                String description = rs.getString("description"); 
                 return Optional.of(new TouristAttraction(attractionName, description, null, null));
             }
         } catch (SQLException e) {
